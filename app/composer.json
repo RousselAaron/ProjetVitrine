@@ -1,0 +1,25 @@
+{
+    "name": "aaronroussel/projetcv",
+    "description": "projet vitrine",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "vendor/composer": "^2.2"
+    },
+    "require-dev": {
+        "vendor/composer": "^2.2",
+        "php": ">=7.4"
+    },
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Aaron",
+            "email": "roussel.aaron.tr@gmail.com"
+        }
+    ]
+}
