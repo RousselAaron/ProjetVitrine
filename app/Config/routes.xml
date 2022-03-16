@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
     <!-- ARTICLE SHOW/ADD/UPDATE/DELETE -->
-    <route p="" controller="ListController" action="index"/>
-    <route p="article" controller="PostController" action="show" params="id"/>
-    <route p="add" controller="PostController" action="addPost"/>
-    <route p="update" controller="PostController" action="updatePost" params="id"/>
-    <route p="delete" controller="PostController" action="deletePost" params="id"/>
+    <route p="" controller="PlaneController" action="index"/>
+    <route p="tutorial" controller="PlaneController" action="show" params="id"/>
+    <route p="addTutorial" controller="TutorialController" action="addTutorial" params="id"/>
+    <route p="addPlane" controller="PlaneController" action="addPlane"/>
+    <route p="update" controller="PlaneController" action="updatePlane" params="id"/>
+    <route p="delete" controller="PlaneController" action="deletePlane" params="id"/>
 
     <!-- USER SHOW/LOGIN/REGISTER/LOGOUT -->
     <route p="user" controller="UserController" action="user"/>
