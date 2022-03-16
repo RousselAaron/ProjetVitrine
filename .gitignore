@@ -1,1 +1,13 @@
 /app/vendor/
+/app/sql/mysql/
+/app/sql/performance_schema/
+/app/sql/sys/
+/app/sql/aria_log.00000001
+/app/sql/aria_log_control
+/app/sql/ddl_recovery.log
+/app/sql/ddl_recovery-backup.log
+/app/sql/ib_buffer_pool
+/app/sql/ib_logfile0
+/app/sql/ibdata1
+/app/sql/ibtmp1
+/app/sql/multi-master.info
