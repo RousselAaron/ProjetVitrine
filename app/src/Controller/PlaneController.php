@@ -50,8 +50,6 @@ class PlaneController extends BaseController
             $plane = $planes[0];
             $planeID = intval($plane->getPlaneId());
         }
-        var_dump($planeID);
-        var_dump(__DIR__."../../src/IMG/".($planeID + 1)."/");
 
         $path = "/var/www/html/src/IMG/".($planeID + 1);
         if(!is_dir($path)) mkdir($path, 0777, true);
@@ -74,74 +72,73 @@ class PlaneController extends BaseController
                 'PlaneImage' => $image,
                 'PlaneName' => trim($_POST['PlaneName']),
                 'fileError' => '',
-                'nameError' => '',
+                'PlaneNameError' => '',
             ];
 
             if(empty($data['PlaneName'])){
                 $data['PlaneNameError'] = 'Plane name cannot be empty !';
             }
 
-            if(empty($data['fileError']) && empty($data['nameError'])){
+            if(empty($data['PlaneNameError']) && empty($data['fileError'])){
                 if($modelPlane->addPlane($data)){
                     if(move_uploaded_file($_FILES["PlaneImage"]["tmp_name"], $target)) {
-                        header('Location:Frontend/');
+                        header('Location:/');
                     }
                 }else{
                     die('Oups ... Something went wrong please try again !');
                 };
             }else{
-                return $this->render('wrong post', $data, 'Frontend/addPlane');
+                return $this->render('wrong post', $data, 'Frontend/index');
             }
         }
 
-        return $this->render('write post', $data, 'Frontend/addPlane');
+        return $this->render('add step', $data, 'Frontend/addPlane');
 
 
     }
 
     //UPDATE POST
-    public function executeUpdatePost(){
-        $modelPost = new PostModel();
-        $post = $modelPost->getPostByID($this->params['id']);
+    public function executeUpdatePlane(){
+        $modelPlane = new PlaneModel();
+        $post = $modelPlane->getPlaneByID($this->params['id']);
 
         $data = [
-            'title' => '',
-            'content' => '',
-            'user_id' => '',
-            'titleError' => '',
-            'contentError' => '',
+            'PlaneID' => '',
+            'PlaneImage' => '',
+            'PlaneName' => '',
+            'fileError' => '',
+            'PlaneNameError' => '',
         ];
+
+        $image = $_FILES["PlaneImage"]['name'];
+        $target = "/var/www/html/src/IMG/".($this->params['id'])."/".basename($image);
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             $data = [
-                'id' => $this->params['id'],
-                'title' => trim($_POST['title']),
-                'content' => trim($_POST['content']),
-                'user_id' => $_SESSION['user_id'],
-                'titleError' => '',
-                'contentError' => '',
+                'PlaneID' => ($this->params['id']),
+                'PlaneImage' => $image,
+                'PlaneName' => trim($_POST['PlaneName']),
+                'fileError' => '',
+                'PlaneNameError' => '',
             ];
-            if(empty($data['title'])){
-                $data['titleError'] = 'Your title cannot be empty !';
-            }
-            else if(empty($data['content'])){
-                $data['contentError'] = 'Your post cannot be empty !';
+            if(empty($data['PlaneName'])){
+                $data['PlaneNameError'] = 'You must name your plane !';
             }
 
-            if(empty($data['contentError']) && empty($data['titleError'])){
-                if($modelPost->updatePost($data)){
-                    header('Location: /article/'.$this->params['id'].'');
+            if(empty($data['PlaneNameError'])){
+                if($modelPlane->updatePlane($data)){
+                    header('Location: /tutorial/'.$this->params['id']);
                 }else{
                     die('Oups ... Something went wrong please try again !');
                 };
             }else{
-                return $this->render('Wrong update', $data, 'Frontend/update');
+                return $this->render('Wrong update', $data, 'Frontend/updatePlane');
             }
         }
 
 
-        return $this->render("Update Post", ['post' => $post], 'Frontend/update');
+        return $this->render("Update Post", ['post' => $post], 'Frontend/updatePlane');
     }
 
     //DELETE POST

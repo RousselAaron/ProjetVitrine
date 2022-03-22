@@ -3,9 +3,10 @@
     <!-- ARTICLE SHOW/ADD/UPDATE/DELETE -->
     <route p="" controller="PlaneController" action="index"/>
     <route p="tutorial" controller="PlaneController" action="show" params="id"/>
-    <route p="addTutorial" controller="TutorialController" action="addTutorial" params="id"/>
     <route p="addPlane" controller="PlaneController" action="addPlane"/>
-    <route p="update" controller="PlaneController" action="updatePlane" params="id"/>
+    <route p="addTutorial" controller="TutorialController" action="addTutorial" params="id"/>
+    <route p="addStep" controller="StepsController" action="addStep" params="id"/>
+    <route p="updatePlane" controller="PlaneController" action="updatePlane" params="id"/>
     <route p="delete" controller="PlaneController" action="deletePlane" params="id"/>
 
     <!-- USER SHOW/LOGIN/REGISTER/LOGOUT -->

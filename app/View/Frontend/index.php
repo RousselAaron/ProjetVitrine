@@ -1,6 +1,6 @@
 <div class="main-container">
     <h2>Les avions</h2>
-    <a class="btn btn-outline-primary" href="/addPlane/">ajouter un avion</a>
+    <a class="btn btn-outline-primary" href="/addPlane">ajouter un avion</a>
     <div class="col mb-2">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <?php

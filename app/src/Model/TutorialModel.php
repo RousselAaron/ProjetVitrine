@@ -5,6 +5,14 @@ namespace App\Model;
 class TutorialModel extends DBManager
 {
 
+    public function getTutorialByID(int $id){
+        $query = $this->db->prepare('SELECT * FROM tutorial WHERE tutorial_id = :id');
+        $query->bindValue(':id', $id, \PDO::PARAM_INT);
+        $query->execute();
+        $query->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, 'App\Entity\Tutorial');
+        return $query->fetch();
+    }
+
     public function getTutorialByPlaneID($id)
     {
         $query = $this->db->prepare('SELECT * FROM tutorial WHERE plane_id = :id');
@@ -25,6 +33,6 @@ class TutorialModel extends DBManager
             return true;
         }else{
             return false;
-        };
+        }
     }
 }
