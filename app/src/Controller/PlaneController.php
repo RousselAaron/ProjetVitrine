@@ -100,7 +100,8 @@ class PlaneController extends BaseController
     //UPDATE POST
     public function executeUpdatePlane(){
         $modelPlane = new PlaneModel();
-        $post = $modelPlane->getPlaneByID($this->params['id']);
+        $plane = $modelPlane->getPlaneByID($this->params['id']);
+        $planeImg = $plane->getImg();
 
         $data = [
             'PlaneID' => '',
@@ -122,23 +123,34 @@ class PlaneController extends BaseController
                 'fileError' => '',
                 'PlaneNameError' => '',
             ];
+            if ($image != "")
+            {
+                $delTarget = "/var/www/html/src/IMG/" . ($this->params['id']) . "/" .$planeImg;
+                unlink($delTarget);
+            }
             if(empty($data['PlaneName'])){
                 $data['PlaneNameError'] = 'You must name your plane !';
             }
 
             if(empty($data['PlaneNameError'])){
-                if($modelPlane->updatePlane($data)){
-                    header('Location: /tutorial/'.$this->params['id']);
+                if($modelPlane->updatePlane($data,$this->params['id'])){
+                    if(move_uploaded_file($_FILES["PlaneImage"]["tmp_name"], $target)) {
+                        header('Location:/tutorial/'.$this->params['id']);
+                    }
+                    elseif (!$image)
+                    {
+                        header('Location:/tutorial/'.$this->params['id']);
+                    }
                 }else{
                     die('Oups ... Something went wrong please try again !');
                 };
             }else{
-                return $this->render('Wrong update', $data, 'Frontend/updatePlane');
+                return $this->render('Wrong update', $data, 'Frontend/updatePlane/'.$this->params['id']);
             }
         }
 
 
-        return $this->render("Update Post", ['post' => $post], 'Frontend/updatePlane');
+        return $this->render("Update Post", ['plane' => $plane], 'Frontend/updatePlane');
     }
 
     //DELETE POST

@@ -13,7 +13,9 @@ class StepsController extends BaseController
 
         $modelStep = new StepModel();
         $steps = $modelStep->getStepsByTutorialID($this->params['id']);
+        $allStepsId = [];
         $modelTutorial = new TutorialModel();
+        foreach ($steps as $step) array_push($allStepsId, $step->getStepsId());
 
         $tutorial = $modelTutorial->getTutorialByID(intval($this->params['id']));
         $planeID = $tutorial->getPlaneId();
@@ -70,7 +72,62 @@ class StepsController extends BaseController
             }
         }
 
-        return $this->render('add plane', ['steps' => $steps, 'tutorial' => $tutorial], 'Frontend/addStep');
+        return $this->render('add plane', ['steps' => $steps, 'tutorial' => $tutorial, 'stepsId' => $allStepsId], 'Frontend/addStep');
+    }
+
+    public function executeUpdateStep(){
+        $modelStep = new StepModel();
+        $modelTutorial = new TutorialModel();
+        $step = $modelStep->getStepByID(intval($this->params['id']));
+        $tutorial = $modelTutorial->getTutorialByID($step->getTutorialId());
+        $steps = $modelStep->getStepsByTutorialID($step->getTutorialId());
+        $planeId = $tutorial->getPlaneId();
+        $allStepsId = [];
+        foreach ($steps as $step) array_push($allStepsId, $step->getStepsId());
+
+
+        $image = $_FILES["StepImage"]['name'];
+        $target = "/var/www/html/src/IMG/".$planeId."/tutorial/".basename($image);
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $stepId = intval(strval($planeId).strval(trim($_POST['StepId'])));
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $data = [
+                'initialStepId' => $step->getStepsId() ,
+                'steps_id' => $stepId ,
+                'img' => $image,
+                'content' => trim($_POST['Content']),
+                'ImgError' => '',
+                'ContentError' => ''
+            ];
+            if ($image != "")
+            {
+                $delTarget = "/var/www/html/src/IMG/".$planeId."/tutorial/".$step->getImg();
+                unlink($delTarget);
+            }
+            if(empty($data['content'])){
+                $data['ContentError'] = 'You must describe your step !';
+            }
+
+            if(empty($data['ContentError'])){
+                if($modelStep->updateStep($data)){
+                    if(move_uploaded_file($_FILES["StepImage"]["tmp_name"], $target)) {
+                        header('Location:/tutorial/'.$step->getTutorialId());
+                    }
+                    elseif (!$image)
+                    {
+                        header('Location:/tutorial/'.$step->getTutorialId());
+                    }
+                }else{
+                    die('Oups ... Something went wrong please try again !');
+                };
+            }else{
+                return $this->render('Wrong update', $data, 'Frontend/updateStep/'.$stepId);
+            }
+        }
+
+
+        return $this->render("Update step", ['step' => $step, 'tutorial' => $tutorial, 'stepsId' => $allStepsId], 'Frontend/updateStep');
     }
 
 }

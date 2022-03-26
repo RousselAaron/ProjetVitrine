@@ -33,7 +33,7 @@ class PlaneModel extends DBManager
             return true;
         }else{
             return false;
-        };
+        }
 
     }
 
@@ -41,8 +41,27 @@ class PlaneModel extends DBManager
 
     }
 
-    public function updatePlane($data){
+    public function updatePlane($data,$id)
+    {
+        if ($data['PlaneImage']) {
+            $query = $this->db->prepare('UPDATE plane SET `name` = :PlaneName, `img` = :img WHERE `plane_id` = :id ');
+            $query->bindValue(':id', $id, \PDO::PARAM_INT);
+            $query->bindValue(':img', $data['PlaneImage'], \PDO::PARAM_STR);
+            $query->bindValue(':PlaneName', $data['PlaneName'], \PDO::PARAM_STR);
 
+        }
+        else {
+            $query = $this->db->prepare('UPDATE plane SET `name` = :PlaneName WHERE `plane_id` = :id ');
+            $query->bindValue(':id', $id, \PDO::PARAM_INT);
+            $query->bindValue(':PlaneName', $data['PlaneName'], \PDO::PARAM_STR);
+
+        }
+
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function getLastPlanesId(): array
@@ -51,6 +70,8 @@ class PlaneModel extends DBManager
         $query->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, 'App\Entity\Plane');
         return $query->fetchAll();
     }
+
+
 
 }
 

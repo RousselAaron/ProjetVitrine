@@ -1,21 +1,19 @@
 <div class="main-container">
 
-    <? echo '<form action="/addStep/'.$this->params['id'].'" method="POST"  enctype="multipart/form-data">' ?>
+    <form action="/addStep/<?= $this->params['id'] ?>" method="POST"  enctype="multipart/form-data">
         <div class="form-group">
             <label for="StepID">Position de l'etape</label>
             <select required class="form-control" id="StepID" name="StepID">
-                <?for ($x=1; $x<=20; $x++) {
+                <?php for ($x=1; $x<=20; $x++) {
 
-                    if($stepId = $vars['steps'][$x-1])
-                    {
-                        if ($stepId->getStepsId() == intval(strval($vars['tutorial']->getPlaneId()) . strval($x))) {
-                            echo '<option value="' . $x . '" disabled>etape ' . $x . '</option>';
+                        if (in_array(intval($vars['tutorial']->getPlaneId().$x),$vars['stepsId'])) {
+                            echo '<option value="' . $x . '" disabled > Etape ' . $x . '</option>';
                         }
-                    }
-                    else
-                    {
-                        echo '<option value="' . $x . '">etape ' . $x . '</option>';
-                    }
+                        else
+                        {
+                            echo '<option value="' . $x . '">etape ' . $x . '</option>';
+                        }
+
                 }?>
             </select>
         </div>

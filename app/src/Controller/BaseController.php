@@ -6,9 +6,9 @@ namespace App\Controller;
  */
 abstract class BaseController
 {
-    protected $params;
-    protected $template = './View/template.php';
-    protected $viewDir = './View/';
+    protected array $params;
+    protected string $template = './View/template.php';
+    protected string $viewDir = './View/';
 
 
     public function __construct(string $action, array $params = []){
