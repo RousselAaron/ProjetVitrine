@@ -1,0 +1,7 @@
+to start this project u must install docker, u can launch it with " docker-compose up -d "
+and stop it with " docker-compose down "
+
+to access the main page -> localhost:5555
+to access database -> localhost:8080
+
+it's a practice project, all plane design and pictures comes from https://www.foldnfly.com/
