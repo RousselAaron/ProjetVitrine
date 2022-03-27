@@ -47,19 +47,41 @@ class TutorialController extends BaseController
             if(empty($data['fileError']) && empty($data['nameError'])){
                 if($modelTutorial->addTutorial($data)){
                     if(is_dir($path)) {
-                        header('Location:/tutorial?id=' . $this->params['id'] . '/');
+                        header('Location:/tutorial/' . $this->params['id']);
                     }
                 }
                 else{
                     die('Oups ... Something went wrong please try again !');
                 };
             }else{
-                return $this->render('wrong post', $data, '/tutorial?id='.$this->params['id'].'/');
+                return $this->render('wrong post', $data, '/tutorial/'.$this->params['id']);
             }
         }
 
-        return $this->render('write post', $data, '/tutorial?id='.$this->params['id'].'/');
+        return $this->render('write post', $data, '/tutorial/'.$this->params['id']);
 
+
+    }
+
+    public function executeDeleteTutorial()
+    {
+        $modelTutorial = new TutorialModel();
+
+        $tutorial = $modelTutorial->getTutorialByID($this->params['id']);
+        $planeId = $tutorial->getPlaneId();
+
+        $delTarget = "/var/www/html/src/IMG/" . $planeId . "/tutorial/";
+        if($delTarget) rmdir($delTarget);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+                if ($modelTutorial->deleteTutorial($this->params['id'])) {
+                    header('Location:/tutorial/'.$this->params['id']);
+                } else {
+                    die('Oups ... Something went wrong please try again !');
+                }
+        }
 
     }
 

@@ -37,10 +37,6 @@ class PlaneModel extends DBManager
 
     }
 
-    public function deletePlane(int $id){
-
-    }
-
     public function updatePlane($data,$id)
     {
         if ($data['PlaneImage']) {
@@ -71,6 +67,16 @@ class PlaneModel extends DBManager
         return $query->fetchAll();
     }
 
+    public function deletePlane($planeId)
+    {
+        $query = $this->db->prepare('DELETE FROM plane WHERE `plane_id` = :id');
+        $query->bindValue(':id', $planeId, \PDO::PARAM_INT);
+        if($query->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 
 }

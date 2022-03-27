@@ -9,7 +9,7 @@ use App\Model\TutorialModel;
 
 class PlaneController extends BaseController
 {
-    //SHOW POST
+    //SHOW PLANE
     public function executeIndex(int $number = null){
         $model = new PlaneModel();
         $index = $model->getAllPlanes($number);
@@ -35,7 +35,7 @@ class PlaneController extends BaseController
     }
 
 
-    //ADD POST
+    //ADD PLANE
     public function executeAddPlane(){
 
         $modelPlane = new PlaneModel();
@@ -97,7 +97,7 @@ class PlaneController extends BaseController
 
     }
 
-    //UPDATE POST
+    //UPDATE PLANE
     public function executeUpdatePlane(){
         $modelPlane = new PlaneModel();
         $plane = $modelPlane->getPlaneByID($this->params['id']);
@@ -153,28 +153,28 @@ class PlaneController extends BaseController
         return $this->render("Update Post", ['plane' => $plane], 'Frontend/updatePlane');
     }
 
-    //DELETE POST
-    public function executeDeletePost(){
-        $modelPost = new PostModel();
-        $post = $modelPost->getPostByID($this->params['id']);
+// DELETE PLANE
+    public function executeDeletePlane()
+    {
+        $modelPlane = new PlaneModel();
 
-        $data = [
-            'post' => $post,
-            'title' => '',
-            'content' => '',
-            'user_id' => '',
-            'titleError' => '',
-            'contentError' => '',
-        ];
+        $plane = $modelPlane->getPlaneByID($this->params['id']);
+        $planeId = $plane->getPlaneId();
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $delTarget = "/var/www/html/src/IMG/" . $planeId;
+        array_map('unlink', glob("$delTarget/*"));
+        rmdir($delTarget);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            if($modelPost->deletePost($this->params['id'])){
-                header('Location: /');
-            }else{
-                die("Cannot delete this post !");
+
+            if ($modelPlane->deletePlane($planeId)) {
+                header('Location:/');
+            } else {
+                die('Oups ... Something went wrong please try again !');
             }
         }
+
     }
 
 }

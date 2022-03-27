@@ -8,7 +8,9 @@
     <route p="addStep" controller="StepsController" action="addStep" params="id"/>
     <route p="updatePlane" controller="PlaneController" action="updatePlane" params="id"/>
     <route p="updateStep" controller="StepsController" action="updateStep" params="id"/>
-    <route p="delete" controller="PlaneController" action="deletePlane" params="id"/>
+    <route p="deleteStep" controller="StepsController" action="deleteStep" params="id"/>
+    <route p="deleteTutorial" controller="TutorialController" action="deleteTutorial" params="id"/>
+    <route p="deletePlane" controller="PlaneController" action="deletePlane" params="id"/>
 
     <!-- USER SHOW/LOGIN/REGISTER/LOGOUT -->
     <route p="user" controller="UserController" action="user"/>

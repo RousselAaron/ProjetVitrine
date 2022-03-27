@@ -10,12 +10,11 @@
             <label for="StepId">Numéros de l'étape</label>
             <select required class="form-control" id="StepId" name="StepId">
                 <?php for ($x=1; $x<=20; $x++) {
-
-                    if (in_array(intval($vars['tutorial']->getPlaneId().$x),$vars['stepsId']) && $x != substr($vars['step']->getStepsId(), strlen(strval($vars['tutorial']->getPlaneId())))) {
-                        echo '<option value="' . $x . '" disabled > Etape ' . $x . '</option>';
-                    }
-                    elseif ($x == substr($vars['step']->getStepsId(), strlen(strval($vars['tutorial']->getPlaneId()))) ){
+                    if ($x == substr($vars['step']->getStepsId(), strlen(strval($vars['tutorial']->getPlaneId()))) ){
                         echo '<option value="' . $x . '" selected="selected" >etape ' . $x . '</option>';
+                    }
+                    elseif (in_array(intval($vars['tutorial']->getPlaneId().$x),$vars['stepsId'])) {
+                        echo '<option value="' . $x . '" disabled > Etape ' . $x . '</option>';
                     }
                     else
                     {

@@ -40,7 +40,7 @@ class StepModel extends DBManager
 
     public function updateStep($data)
     {
-        if ($data['StepImage']) {
+        if ($data['img']) {
             $query = $this->db->prepare('UPDATE steps SET `content` = :content, `img` = :img, `steps_id` = :steps_id WHERE `steps_id` = :id ');
             $query->bindValue(':id', $data['initialStepId'], \PDO::PARAM_INT);
             $query->bindValue(':steps_id', $data['steps_id'], \PDO::PARAM_INT);
@@ -68,5 +68,16 @@ class StepModel extends DBManager
         }
 
 
+    }
+
+    public function deleteStep(int $id)
+    {
+        $query = $this->db->prepare('DELETE FROM steps WHERE `steps_id` = :id');
+        $query->bindValue(':id', $id, \PDO::PARAM_INT);
+        if($query->execute()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

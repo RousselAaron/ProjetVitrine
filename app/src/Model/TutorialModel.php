@@ -35,4 +35,15 @@ class TutorialModel extends DBManager
             return false;
         }
     }
+
+    public function deleteTutorial(int $id)
+    {
+        $query = $this->db->prepare('DELETE FROM tutorial WHERE `tutorial_id` = :id');
+        $query->bindValue(':id', $id, \PDO::PARAM_INT);
+        if($query->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
